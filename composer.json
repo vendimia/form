@@ -1,0 +1,19 @@
+{
+    "name": "vendimia/form",
+    "description": "HTML form validation and render library",
+    "keywords": ["form"],
+    "license": "GPL-3.0-or-later",
+    "require": {
+        "php": ">=8.0",
+        "ext-mbstring": "*"
+    },
+    "suggest": {
+        "vendimia/html": "Required for HTML form rendering",
+        "vendimia/http": "Needed for integrated CSRF protection"
+    },
+    "autoload": {
+        "psr-4": {
+            "Vendimia\\Form\\": "src"
+        }
+    }
+}
