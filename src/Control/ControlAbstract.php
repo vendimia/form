@@ -45,13 +45,17 @@ abstract class ControlAbstract
         array $properties = []
     )
     {
-        $this->properties = array_merge($this->properties, $properties);
+        $this->properties = array_merge(
+            $this->properties,
+            $this->extra_properties ?? [],
+            $properties
+        );
 
         $this->properties['caption'] ??= mb_convert_case(strtr($name, '_', ' '),   MB_CASE_TITLE);
         $this->properties['id_prefix'] = mb_strtolower($this->form->getName());
     }
 
-    /** 
+    /**
      * Returns the prefixed (if any) ID for a block in this control.
      */
     protected function getId($block = '')
@@ -61,19 +65,19 @@ abstract class ControlAbstract
             $this->name,
             $block
         ];
-        
+
         return join('_', array_filter($return));
     }
 
-    /** 
+    /**
      * Render the caption block
      */
     public function renderCaption(): string
     {
         $block = new Tag(...$this->form::$html_caption_block);
-        
+
         $caption = $this->properties['caption'] . $this->form::$label_suffix;
-        
+
         $content = Tag::label(for: $this->getId())->setContent($caption);
 
         if ($this->properties['info']) {
@@ -86,7 +90,7 @@ abstract class ControlAbstract
         return $block;
     }
 
-    /** 
+    /**
      * Renders the message list
      */
     public function renderMessages(): string
@@ -102,7 +106,7 @@ abstract class ControlAbstract
         return $messages;
     }
 
-    /** 
+    /**
      * Render the widget block of this control
      */
     public function renderWidget(array $extra_attributes = []): string
@@ -121,7 +125,7 @@ abstract class ControlAbstract
         return $widget;
     }
 
-    /** 
+    /**
      * Render the complete control
      */
     public function render(): string
