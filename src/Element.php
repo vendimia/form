@@ -8,7 +8,7 @@ use Vendimia\Form\Control\ControlInterface;
 use RuntimeException;
 use Stringable;
 
-/** 
+/**
  * Definition of each form element, for validating and/or for draw its HTML control
  */
 class Element implements Stringable
@@ -56,7 +56,7 @@ class Element implements Stringable
         $this->properties = array_merge($this->properties, $properties);
     }
 
-    /** 
+    /**
      * Sets the HTML control for this element
      */
     public function setControl(ControlInterface $control)
@@ -64,7 +64,7 @@ class Element implements Stringable
         $this->control = $control;
     }
 
-    /** 
+    /**
      * Returns whether this element has a HTML control
      */
     public function hasControl(): bool
@@ -72,7 +72,7 @@ class Element implements Stringable
         return !is_null($this->control);
     }
 
-    /** 
+    /**
      * Returns this element HTML control
      */
     public function getControl(): ?ControlInterface
@@ -80,24 +80,24 @@ class Element implements Stringable
         return $this->control;
     }
 
-    /** 
+    /**
      * Adds a filter to this element
      */
-    public function addFilter(FilterInterface $filter) 
+    public function addFilter(FilterInterface $filter)
     {
         $this->filters[] = $filter;
     }
 
-    /** 
+    /**
      * Adds a validator to this element
      */
-    public function addValidator(ValidatorInterface $validator) 
+    public function addValidator(ValidatorInterface $validator)
     {
         $this->validators[] = $validator;
     }
 
 
-    /** 
+    /**
      * Set a value to this element, applying all the filters
      */
     public function setValue($value)
@@ -106,7 +106,7 @@ class Element implements Stringable
         if (is_null($value)) {
             $value = '';
         }
-        
+
         foreach ($this->filters as $filter) {
             $value = $filter->filter($value);
         }
@@ -115,7 +115,7 @@ class Element implements Stringable
         $this->value = $value;
     }
 
-    /** 
+    /**
      * Returns this element value
      */
     public function getValue()
@@ -123,7 +123,7 @@ class Element implements Stringable
         return $this->value;
     }
 
-    /** 
+    /**
      * Return this element name
      */
     public function getName()
@@ -131,7 +131,7 @@ class Element implements Stringable
         return $this->name;
     }
 
-    /** 
+    /**
      * Return this field name, if return_value = true, otherwise returns null
      */
     public function getFieldName(): ?string
@@ -139,7 +139,7 @@ class Element implements Stringable
         if ($this->properties['return_value']) {
             return $this->properties['field_name'] ?? $this->name;
         }
-        
+
         return null;
     }
 
@@ -151,7 +151,7 @@ class Element implements Stringable
         $this->messages = array_merge($this->messages, $messages);
     }
 
-    /** 
+    /**
      * Returns the message list generated in validation
      */
     public function getMessages(): array
@@ -159,7 +159,7 @@ class Element implements Stringable
         return $this->messages;
     }
 
-    /** 
+    /**
      * Validate this element value
      */
     public function validate(): bool
@@ -168,15 +168,20 @@ class Element implements Stringable
             return $this->is_valid;
         }
 
+        $optional = $this->properties['optional'];
+        $empty = !(bool)$this->value;
+
         // Si no es opcional y está vacío, fallamos
-        if (!$this->properties['optional'] && (bool)$this->value == false) {
+        if (!$optional && $empty) {
             $this->addMessages($this->properties['required_message']);
-            
+
             return $this->is_valid = false;
         }
 
         $valid = true;
-        foreach ($this->validators as $validator)
+
+        // Solo validamos si no está vacío
+        if (!$empty) foreach ($this->validators as $validator)
         {
             if (!$validator->validate($this->value)) {
                 $valid = false;
@@ -191,9 +196,9 @@ class Element implements Stringable
     {
         return $this->properties;
     }
-    
 
-    /** 
+
+    /**
      * Renders the HTML control of this element, if any
      */
     public function __toString()
@@ -202,5 +207,5 @@ class Element implements Stringable
             throw new RuntimeException("Element '{$this->name}' doesn't have an HTML control");
         }
         return $this->control->render();
-    }        
+    }
 }
