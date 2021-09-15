@@ -87,12 +87,12 @@ class Form implements Stringable
 
             }
 
-            // Precargamos filtros y validadores
+            // Precargamos formateadores y validadores
             foreach ($rp->getAttributes(
-                Filter\FilterInterface::class,
+                Formatter\FormatterInterface::class,
                 ReflectionAttribute::IS_INSTANCEOF
             ) as $ra) {
-                $this->$name->addFilter($ra->newInstance());
+                $this->$name->addFormatter($ra->newInstance());
             }
 
             foreach ($rp->getAttributes(

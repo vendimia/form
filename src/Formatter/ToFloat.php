@@ -1,5 +1,5 @@
 <?php
-namespace Vendimia\Form\Filter;
+namespace Vendimia\Form\Formatter;
 
 use Attribute;
 
@@ -7,9 +7,9 @@ use Attribute;
  * Convers the value to a float number
  */
  #[Attribute]
-class ToFloat implements FilterInterface
+class ToFloat implements FormatterInterface
 {
-    public function filter($value)
+    public function format($value)
     {
         if(is_null($value)) {
             return null;

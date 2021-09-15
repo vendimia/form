@@ -1,7 +1,7 @@
 <?php
 namespace Vendimia\Form;
 
-use Vendimia\Form\Filter\FilterInterface;
+use Vendimia\Form\Formatter\FormatterInterface;
 use Vendimia\Form\Validate\ValidatorInterface;
 use Vendimia\Form\Control\ControlInterface;
 
@@ -16,8 +16,8 @@ class Element implements Stringable
     // HTML control
     private ?ControlInterface $control = null;
 
-    // Value filters
-    private $filters = [];
+    // Value formatters
+    private $formatters = [];
 
     // Value validators
     private $validators = [];
@@ -81,11 +81,11 @@ class Element implements Stringable
     }
 
     /**
-     * Adds a filter to this element
+     * Adds a formatters to this element
      */
-    public function addFilter(FilterInterface $filter)
+    public function addFormatter(FormatterInterface $formatters)
     {
-        $this->filters[] = $filter;
+        $this->formatters[] = $formatters;
     }
 
     /**
@@ -107,8 +107,8 @@ class Element implements Stringable
             $value = '';
         }
 
-        foreach ($this->filters as $filter) {
-            $value = $filter->filter($value);
+        foreach ($this->formatters as $formatter) {
+            $value = $formatter->format($value);
         }
 
         $this->is_valid = null;

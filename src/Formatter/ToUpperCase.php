@@ -1,5 +1,5 @@
 <?php
-namespace Vendimia\Form\Filter;
+namespace Vendimia\Form\Formatter;
 
 use Attribute;
 
@@ -7,9 +7,9 @@ use Attribute;
  * Converts the value to uppercase
  */
 #[Attribute]
-class ToUpperCase implements FilterInterface
+class ToUpperCase implements FormatterInterface
 {
-    public function filter($value)
+    public function format($value)
     {
         if(is_null($value)) {
             return null;
