@@ -21,7 +21,9 @@ class ListBox extends ControlAbstract implements ControlInterface
         ], $extra_attributes, $this->properties['html']);
 
         return Tag::select(...$args)->setContent(
-            new OptionTags($this->properties['list'])
+            new OptionTags($this->properties['list'],
+            [$this->element->getValue()]
+        )
         )->noEscapeContent();
     }
 
