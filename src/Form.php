@@ -33,7 +33,7 @@ class Form implements Stringable
     {
         // El nombre de este formulario será el nombre de la clase, en minúsculas
         $this::$name ??= mb_strtolower(array_slice(explode('\\', $this::class), -1)[0]);
-        
+
         $ro = new ReflectionObject($this);
 
         foreach ($ro->getProperties(ReflectionProperty::IS_PUBLIC) as $rp) {
@@ -47,14 +47,14 @@ class Form implements Stringable
 
             // Si existe un atributo Element, lo usamos para sacar las propiedades
             $element = $rp->getAttributes(
-                Element::class, 
+                Element::class,
                 ReflectionAttribute::IS_INSTANCEOF
             )[0] ?? false;
 
             $element_class = Element::class;
             if ($element) {
                 $properties = $element->getArguments();
-                $element_class = $element->getName(); 
+                $element_class = $element->getName();
             }
 
             // Valor por defecto
@@ -64,7 +64,7 @@ class Form implements Stringable
             if (is_null($value)) {
                 $value = '';
             }
-            
+
             $this->$name = new $element_class(
                 form: $this,
                 name: $name,
@@ -84,37 +84,37 @@ class Form implements Stringable
                     name: $name,
                     properties: $control->getArguments(),
                 ));
-                
+
             }
 
             // Precargamos filtros y validadores
             foreach ($rp->getAttributes(
-                Filter\FilterInterface::class, 
+                Filter\FilterInterface::class,
                 ReflectionAttribute::IS_INSTANCEOF
             ) as $ra) {
                 $this->$name->addFilter($ra->newInstance());
             }
 
             foreach ($rp->getAttributes(
-                Validate\ValidatorInterface::class, 
+                Validate\ValidatorInterface::class,
                 ReflectionAttribute::IS_INSTANCEOF
             ) as $ra) {
                 $this->$name->addValidator($ra->newInstance());
             }
-            
+
             $this->$name->setValue($value);
 
             $this->elements[$name] = $this->$name;
         }
     }
 
-    /** 
+    /**
      * Validates all form elements
      */
     public function validate(): bool
     {
         $valid = true;
-        foreach ($this->elements as $element) 
+        foreach ($this->elements as $element)
         {
             if(!$element->validate()) {
                 $valid = false;
@@ -133,17 +133,23 @@ class Form implements Stringable
         return $this::$name;
     }
 
-    /** 
+    /**
      * Sets values to elements
      */
     public function setValues(array|Traversable|Entity $values)
     {
+        // Si los valores vienen de un entity, lo convertimos a array
         if ($values instanceof Entity) {
             $values = $values->asArray();
         }
-        
+
         foreach ($values as $element => $value)
         {
+            // Si el valor es un Entity, obtenemos su pk()
+            if ($value instanceof Entity) {
+                $value = $value->pk();
+            }
+
             // Solo añadimos si existe
             if (isset($this->$element)) {
                 $this->$element->setValue($value);
@@ -159,7 +165,7 @@ class Form implements Stringable
         return $this->messages;
     }
 
-    /** 
+    /**
      * Returns all elements values
      */
     public function getValues(): array
@@ -176,7 +182,7 @@ class Form implements Stringable
         return $return;
     }
 
-    /** 
+    /**
      * Renders all element with a HTML control defined
      */
     public function render(): string
@@ -192,12 +198,12 @@ class Form implements Stringable
         return $html;
     }
 
-    /** 
+    /**
      * Renders the form with <FORM> and <BUTTON TYPE=SUBMIT> tags
      */
     public function renderFull(
         $form_id = null,
-        $method = 'post', 
+        $method = 'post',
         $submit = "Submit",
         $form_attr = [],
         $submit_attr = [],
@@ -213,7 +219,7 @@ class Form implements Stringable
             ->setContent($submit)
             ->noEscapeContent()
         ;
-        
+
         $html = Tag::form(
             id: $form_id,
             method: $method,
@@ -226,7 +232,7 @@ class Form implements Stringable
         return $html;
     }
 
-    /** 
+    /**
      * Shortcut to renderFull()
      */
     public function __toString()
