@@ -10,12 +10,16 @@ class CheckBox extends ControlAbstract implements ControlInterface
 {
     public function renderControl(array $extra_attributes = []): string
     {
-        $args = array_merge([
+        $params = [
             'id' => $this->getId(),
             'type' => 'checkbox',
             'name' => $this->name,
-            'value' => $this->element->getValue(),
-        ], $extra_attributes, $this->properties['html']);
+        ];
+        if ($this->element->getValue()) {
+            $params['checked'] = true;
+        }
+
+        $args = array_merge($params, $extra_attributes, $this->properties['html']);
 
         return Tag::input(...$args);
     }
