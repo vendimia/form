@@ -99,7 +99,8 @@ class Form implements Stringable
                 Validate\ValidatorInterface::class,
                 ReflectionAttribute::IS_INSTANCEOF
             ) as $ra) {
-                $this->$name->addValidator($ra->newInstance());
+                $this->$name->addValidator($validator = $ra->newInstance());
+                $validator->setForm($this);
             }
 
             $this->$name->setValue($value);
@@ -119,6 +120,13 @@ class Form implements Stringable
             if(!$element->validate()) {
                 $valid = false;
                 $this->messages[$element->getName()] = $element->getMessages();
+            }
+        }
+
+        // Ejecutamos el validador global, si es que hay
+        if ($validator = static::$global_validator ?? null) {
+            if (!$this->$validator()) {
+                $valid = false;
             }
         }
 
@@ -155,6 +163,14 @@ class Form implements Stringable
                 $this->$element->setValue($value);
             }
         }
+    }
+
+    /**
+     * Adds a raw message for a element
+     */
+    public function addMessage($element, $message)
+    {
+        $this->messages[$element][] = $message;
     }
 
     /**
