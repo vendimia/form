@@ -199,13 +199,14 @@ class Element implements Stringable
 
 
     /**
-     * Renders the HTML control of this element, if any
+     * If this element has an HTML control, returns the rendered HTML element.
+     * Otherwise returns its value.
      */
     public function __toString()
     {
-        if (!$this->hasControl()) {
-            throw new RuntimeException("Element '{$this->name}' doesn't have an HTML control");
+        if ($this->hasControl()) {
+            return $this->control->render();
         }
-        return $this->control->render();
+        return $this->value;
     }
 }
