@@ -1,16 +1,25 @@
 <?php
 namespace Vendimia\Form\Validate;
 
+use Vendimia\Form\Form;
+
 abstract class ValidatorAbstract implements ValidatorInterface
 {
     protected array $messages = [];
     protected array $fail_templates = [];
+    protected Form $form;
 
-    public function __construct(?array $fail_templates = null) 
+    public function __construct(
+        ?array $fail_templates = null)
     {
         if ($fail_templates) {
             $this->fail_templates = $fail_templates;
         }
+    }
+
+    public function setForm(Form $form): void
+    {
+        $this->form = $form;
     }
 
     public function getMessages(): array
@@ -18,7 +27,7 @@ abstract class ValidatorAbstract implements ValidatorInterface
         return $this->messages;
     }
 
-    /** 
+    /**
      * Adds a message, replacing variables
      */
     public function addMessage($code, ...$args)
