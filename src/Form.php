@@ -230,11 +230,14 @@ class Form implements Stringable
         }
 
         $html = $this->render();
-        $html .= Tag::button(type: 'submit')
+
+        if ($submit) {
+            $html .= Tag::button(type: 'submit')
             ->addAttributes(...$submit_attr)
             ->setContent($submit)
             ->noEscapeContent()
         ;
+        }
 
         $html = Tag::form(
             id: $form_id,
