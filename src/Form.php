@@ -9,6 +9,7 @@ use ReflectionObject;
 use ReflectionProperty;
 use ReflectionAttribute;
 use Stringable;
+use Traversable;
 
 class Form implements Stringable
 {
