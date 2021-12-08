@@ -42,6 +42,8 @@ class Element implements Stringable
         // Message when a non-optional element is empty
         'required_message' => 'This element cannot be empty',
 
+        // True validate this element
+        'validate' => true,
     ];
 
     /** Validation result, for reusing */
@@ -54,6 +56,22 @@ class Element implements Stringable
     ) {
 
         $this->properties = array_merge($this->properties, $properties);
+    }
+
+    /**
+     * Returns a property value
+     */
+    public function getProperty($property, $default_value = null)
+    {
+        return $this->properties[$property] ?? $default_value;
+    }
+
+    /**
+     * Sets a property
+     */
+    public function setProperty($property, $value)
+    {
+        $this->properties[$property] = $value;
     }
 
     /**
@@ -149,6 +167,14 @@ class Element implements Stringable
     public function addMessages(...$messages): void
     {
         $this->messages = array_merge($this->messages, $messages);
+    }
+
+    /**
+     * Alias of 'addMessages()'
+     */
+    public function addMessage(...$messages): void
+    {
+        $this->addMessages(...$messages);
     }
 
     /**

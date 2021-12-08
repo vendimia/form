@@ -36,6 +36,9 @@ abstract class ControlAbstract
 
         // Extra html attributes for the HTML control tag
         'html' => [],
+
+        // True renders this element
+        'render' => true,
     ];
 
     public function __construct(
@@ -53,6 +56,16 @@ abstract class ControlAbstract
 
         $this->properties['caption'] ??= mb_convert_case(strtr($name, '_', ' '),   MB_CASE_TITLE);
         $this->properties['id_prefix'] = mb_strtolower($this->form->getName());
+
+        if (method_exists($this, 'initialize'))
+        {
+            $this->initialize();
+        }
+    }
+
+    public function setProperty($property, $value)
+    {
+        $this->properties[$property] = $value;
     }
 
     /**
@@ -130,6 +143,9 @@ abstract class ControlAbstract
      */
     public function render(): string
     {
+        if (!$this->properties['render']) {
+            return '';
+        }
         $caption = $this->renderCaption();
         $widget = $this->renderWidget();
 

@@ -118,6 +118,10 @@ class Form implements Stringable
         $valid = true;
         foreach ($this->elements as $element)
         {
+            if (!$element->getProperty('validate')) {
+                continue;
+            }
+
             if(!$element->validate()) {
                 $valid = false;
                 $this->messages[$element->getName()] = $element->getMessages();
@@ -132,6 +136,14 @@ class Form implements Stringable
         }
 
         return $valid;
+    }
+
+    /**
+     * Alias of validate()
+     */
+    public function isValid(): bool
+    {
+        return $this->validate();
     }
 
     /**
