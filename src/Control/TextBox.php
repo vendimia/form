@@ -3,7 +3,7 @@ namespace Vendimia\Form\Control;
 
 use Vendimia\Html\Tag;
 
-/** 
+/**
  * Renders a text input control using <INPUT TYPE="TEXT"> tag
  */
 class TextBox extends ControlAbstract implements ControlInterface
@@ -16,7 +16,7 @@ class TextBox extends ControlAbstract implements ControlInterface
             'name' => $this->name,
             'value' => $this->element->getValue(),
         ], $extra_attributes, $this->properties['html']);
-        
+
         return Tag::input(...$args);
     }
 }
