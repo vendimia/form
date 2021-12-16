@@ -114,6 +114,13 @@ class Element implements Stringable
         $this->validators[] = $validator;
     }
 
+    /**
+     * Set a list for this element control
+     */
+    public function setList(array $list)
+    {
+        $this->control->setList($list);
+    }
 
     /**
      * Set a value to this element, applying all the filters
