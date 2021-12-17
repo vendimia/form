@@ -6,11 +6,14 @@ use Vendimia\Html\Tag;
 /**
  * Renders multiple controls inside one
  */
-class Combine extends TextBox
+class Combine extends ControlAbstract implements ControlInterface
 {
     protected $extra_properties = [
         // Control list
         'controls' => [],
+
+        // Separation HTML between controls
+        'separator' => '',
     ];
 
     public function initialize()
@@ -23,13 +26,13 @@ class Combine extends TextBox
 
     public function renderControl(array $extra_attributes = []): string
     {
-        $html = '';
+        $html = [];
         foreach ($this->properties['controls'] as $c_name) {
             $control = $this->form->$c_name->getControl();
-            $html .= $control->renderControl();
+            $html[] = $control->renderControl();
             $this->element->addMessage(...$control->element->getMessages());
         }
 
-        return $html;
+        return join($this->properties['separator'], $html);
     }
 }
