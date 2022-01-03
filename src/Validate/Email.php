@@ -15,11 +15,16 @@ class Email extends ValidatorAbstract implements ValidatorInterface
     const EMAIL_REGEXP = '/^[a-zA-Z0-9.!#$%&\'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/';
 
     protected array $fail_templates = [
-        'fail' => 'The email address {actual} failed validation',
+        'invalid' => 'The email address {actual} failed validation',
     ];
 
     public function validate($value): bool
     {
-        return preg_match(self::EMAIL_REGEXP, $value) === 1;
+        $valid = preg_match(self::EMAIL_REGEXP, $value) === 1;
+        if (!$valid) {
+            $this->addMessage('invalid', actual: $value);
+        }
+
+        return $valid;
     }
 }
