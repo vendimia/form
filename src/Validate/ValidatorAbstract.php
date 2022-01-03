@@ -17,6 +17,14 @@ abstract class ValidatorAbstract implements ValidatorInterface
         }
     }
 
+    /**
+     * Clear the messages for this validator
+     */
+    public function clearMessages()
+    {
+        $this->messages = [];
+    }
+
     public function setForm(Form $form): void
     {
         $this->form = $form;

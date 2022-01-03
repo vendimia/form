@@ -137,6 +137,7 @@ class Element implements Stringable
         }
 
         $this->is_valid = null;
+        $this->messages = [];
         $this->value = $value;
     }
 
@@ -216,6 +217,9 @@ class Element implements Stringable
         // Solo validamos si no está vacío
         if (!$empty) foreach ($this->validators as $validator)
         {
+            // Borramos los mensajes que pueden haber quedado en el validador
+            $validator->clearMessages();
+
             if (!$validator->validate($this->value)) {
                 $valid = false;
             }

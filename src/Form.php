@@ -155,7 +155,9 @@ class Form implements Stringable
     }
 
     /**
-     * Sets values to elements
+     * Sets values to all elements.
+     *
+     * This method also resets the validation information
      */
     public function setValues(array|Traversable|Entity $values)
     {
@@ -176,6 +178,8 @@ class Form implements Stringable
                 $this->$element->setValue($value);
             }
         }
+
+        $this->messages = [];
     }
 
     /**
