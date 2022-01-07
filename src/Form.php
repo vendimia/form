@@ -27,6 +27,9 @@ class Form implements Stringable
     private array $elements = [];
     private array $messages = [];
 
+    // Validation state
+    private ?bool $is_valid = null;
+
 
     public function __construct(
         private ?Request $request = null,
@@ -115,6 +118,10 @@ class Form implements Stringable
      */
     public function validate(): bool
     {
+        if (!is_null($this->is_valid)) {
+            return $this->is_valid;
+        }
+
         $valid = true;
         foreach ($this->elements as $element)
         {
@@ -135,16 +142,27 @@ class Form implements Stringable
             }
         }
 
+        $this->is_valid = $valid;
+
         return $valid;
     }
 
     /**
-     * Alias of validate()
+     * Alias of self::validate()
      */
     public function isValid(): bool
     {
         return $this->validate();
     }
+
+    /**
+     * Alias of !self::validate()
+     */
+    public function notValid(): bool
+    {
+        return !$this->validate();
+    }
+
 
     /**
      * Return this form's name
