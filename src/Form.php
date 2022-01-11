@@ -197,6 +197,7 @@ class Form implements Stringable
             }
         }
 
+        $this->is_valid = null;
         $this->messages = [];
     }
 
