@@ -4,7 +4,7 @@ namespace Vendimia\Form\Validate;
 use Attribute;
 
 /**
- * Validate if a value is in the array $valid_values
+ * Validate if a value is in the array $values
  *
  * Error templates: invalid
  * Template variables:
@@ -17,7 +17,7 @@ class ValueList extends ValidatorAbstract implements ValidatorInterface
     ];
 
     public function __construct(
-        private array $valid_values,
+        private array $values,
         ?array $fail_templates = null,
     )
     {
@@ -26,7 +26,7 @@ class ValueList extends ValidatorAbstract implements ValidatorInterface
 
     public function validate($value): bool
     {
-        if (in_array($value, $this->valid_values)) {
+        if (in_array($value, $this->values)) {
             return true;
         }
 
