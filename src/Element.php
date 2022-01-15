@@ -44,6 +44,9 @@ class Element implements Stringable
 
         // True validate this element
         'validate' => true,
+
+        // False disables automated validation and rendering of this element
+        'enabled' => true,
     ];
 
     /** Validation result, for reusing */

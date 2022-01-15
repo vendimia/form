@@ -133,6 +133,10 @@ class Form implements Stringable
 
         foreach ($this->elements as $element)
         {
+            if (!$element->getProperty('enabled')) {
+                continue;
+            }
+
             if (!$element->getProperty('validate')) {
                 continue;
             }
@@ -248,6 +252,10 @@ class Form implements Stringable
         $html = '';
         foreach ($this->elements as $element)
         {
+            if (!$element->getProperty('enabled')) {
+                continue;
+            }
+
             if ($element->hasControl()) {
                 $html .= $element->getControl()->render();
             }
