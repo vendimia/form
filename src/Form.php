@@ -245,12 +245,17 @@ class Form implements Stringable
     }
 
     /**
-     * Renders all element with a HTML control defined
+     * Renders some or all element with a HTML control defined
      */
-    public function render(): string
+    public function render($elements = []): string
     {
+        $source = $this->elements;
+
+        if ($elements) {
+            $source = array_intersect_key($this->elements, array_flip($elements));
+        }
         $html = '';
-        foreach ($this->elements as $element)
+        foreach ($source as $element)
         {
             if (!$element->getProperty('enabled')) {
                 continue;
