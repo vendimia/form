@@ -189,16 +189,11 @@ class Form implements Stringable
      */
     public function setValues(array|Traversable|Entity $values)
     {
-        // Si los valores vienen de un entity, lo convertimos a array
-        if ($values instanceof Entity) {
-            $values = $values->asArray();
-        }
-
         foreach ($values as $element => $value)
         {
             // Si el valor es un Entity, obtenemos su pk()
             if ($value instanceof Entity) {
-                $value = $value->pk();
+                $value = $value->load()->pk();
             }
 
             // Solo añadimos si existe
