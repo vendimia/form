@@ -21,9 +21,6 @@ class Form implements Stringable
     public static $html_control_block = ['div'];
     public static $label_suffix = ':';
 
-    // Name of this form. Default is the class name
-    public static $name = null;
-
     private array $elements = [];
     private array $messages = [];
 
@@ -35,9 +32,6 @@ class Form implements Stringable
         private ?Request $request = null,
     )
     {
-        // El nombre de este formulario será el nombre de la clase, en minúsculas
-        $this::$name ??= mb_strtolower(array_slice(explode('\\', $this::class), -1)[0]);
-
         $ro = new ReflectionObject($this);
 
         foreach ($ro->getProperties(ReflectionProperty::IS_PUBLIC) as $rp) {
@@ -179,7 +173,7 @@ class Form implements Stringable
      */
     public function getName()
     {
-        return $this::$name;
+        return $this::$name ?? mb_strtolower(array_slice(explode('\\', $this::class), -1)[0]);
     }
 
     /**
