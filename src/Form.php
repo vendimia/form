@@ -270,7 +270,7 @@ class Form implements Stringable
     ): string
     {
         if (is_null($form_id)) {
-            $form_id = 'form_' . self::$name;
+            $form_id = 'form_' . $this->getName();
         }
 
         $html = $this->render();
