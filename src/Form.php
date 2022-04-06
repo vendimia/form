@@ -209,6 +209,14 @@ class Form implements Stringable
     }
 
     /**
+     * Returns an array with all this form elements.
+     */
+    public function getElements(): array
+    {
+        return $this->elements;
+    }
+
+    /**
      * Return all validation error messages
      */
     public function getMessages(): array
