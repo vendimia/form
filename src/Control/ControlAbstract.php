@@ -63,9 +63,20 @@ abstract class ControlAbstract
         }
     }
 
+    /**
+     * Property setter
+     */
     public function setProperty($property, $value)
     {
         $this->properties[$property] = $value;
+    }
+
+    /**
+     * Property getter
+     */
+    public function getProperty($property, $default_value = null)
+    {
+        return $this->properties[$property] ?? default_value;
     }
 
     /**
