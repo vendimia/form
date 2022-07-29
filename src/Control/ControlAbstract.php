@@ -162,6 +162,7 @@ abstract class ControlAbstract
         $widget = $this->renderWidget();
 
         $control = new Tag(...$this->form::$html_control_block);
+        $control['id'] = 'control_' . $this->getId();
         $control->setContent($caption . $widget)->noEscapeContent();
 
         return $control;
