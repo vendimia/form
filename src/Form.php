@@ -244,7 +244,7 @@ class Form implements Stringable
     /**
      * Renders some or all element with a HTML control defined
      */
-    public function render($elements = []): string
+    public function render(...$elements): string
     {
         $source = $this->elements;
 
