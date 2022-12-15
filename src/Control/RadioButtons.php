@@ -11,6 +11,9 @@ class RadioButtons extends ControlAbstract implements ControlInterface
     protected $extra_properties = [
         // Element list
         'list' => [],
+
+        // Array defining surrounding HTML element for each checkbox
+        'html_envelop' => [],
     ];
 
     public function renderControl(array $extra_attributes = []): string
@@ -28,11 +31,20 @@ class RadioButtons extends ControlAbstract implements ControlInterface
                 $input_tag['checked'] = 'true';
             }
 
-            $html[] = '<label>' .
+            $radio = '<label>' .
                 $input_tag .
                 $description .
                 '</label>'
             ;
+
+            if($this->properties['html_envelop']) {
+                $radio =
+                    (new Tag(...$this->properties['html_envelop']))($radio)
+                    ->noEscapeContent()
+                ;
+            }
+
+            $html[] = $radio;
         }
 
         return join('', $html);
