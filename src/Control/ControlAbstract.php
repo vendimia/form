@@ -80,6 +80,14 @@ abstract class ControlAbstract
     }
 
     /**
+     * Shortcut for setting the 'list' property.
+     */
+    public function setList(array $value_list)
+    {
+        $this->properties['list'] = $value_list;
+    }
+
+    /**
      * Returns the prefixed (if any) ID for a block in this control.
      */
     protected function getId($block = '')

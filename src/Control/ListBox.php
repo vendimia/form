@@ -26,12 +26,4 @@ class ListBox extends ControlAbstract implements ControlInterface
         )
         )->noEscapeContent();
     }
-
-    /**
-     * Sets a value list for this control.
-     */
-    public function setList(array $value_list)
-    {
-        $this->properties['list'] = $value_list;
-    }
 }
