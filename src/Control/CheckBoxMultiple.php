@@ -13,7 +13,7 @@ class CheckBoxMultiple extends ControlAbstract implements ControlInterface
         'list' => [],
 
         // Array defining surrounding HTML element for each checkbox
-        'html_checkbox_element' => [],
+        'html_envelop_tag' => [],
     ];
 
     public function renderControl(array $extra_attributes = []): string
@@ -22,21 +22,32 @@ class CheckBoxMultiple extends ControlAbstract implements ControlInterface
 
         foreach ($this->properties['list'] as $name => $description)
         {
-            $input_tag = Tag::input(
-                type: 'checkbox',
-                name: $this->name . '[]',
-                value: $name
-            );
+            $args = array_merge([
+                'type' => 'checkbox',
+                'name' => $this->name . '[]',
+                'value' => $name
+            ], $extra_attributes, $this->getProperty('html'));
+
+            $input_tag = Tag::input(...$args);
 
             if (in_array($name, $this->element->getValue())) {
                 $input_tag['checked'] = 'true';
             }
 
-            $html[] = '<label>' .
+            $checkbox = '<label>' .
                 $input_tag .
                 $description .
                 '</label>'
             ;
+
+            if($this->properties['html_envelop_tag']) {
+                $checkbox =
+                    (new Tag(...$this->properties['html_envelop_tag']))($checkbox)
+                    ->noEscapeContent()
+                ;
+            }
+
+            $html[] = $checkbox;
         }
 
         return join('', $html);
