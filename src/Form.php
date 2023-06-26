@@ -1,7 +1,6 @@
 <?php
 namespace Vendimia\Form;
 
-use Vendimia\Http\Request;
 use Vendimia\Html\Tag;
 use Vendimia\Database\Entity;
 
@@ -28,9 +27,7 @@ class Form implements Stringable
     private ?bool $is_valid = null;
 
 
-    public function __construct(
-        private ?Request $request = null,
-    )
+    public function __construct(...$values)
     {
         $ro = new ReflectionObject($this);
 
