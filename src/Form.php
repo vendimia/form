@@ -118,13 +118,6 @@ class Form implements Stringable
 
         $valid = true;
 
-        // Ejecutamos el validador global, si es que hay
-        if ($validator = static::$global_validator ?? null) {
-            if (!$this->$validator()) {
-                $valid = false;
-            }
-        }
-
         foreach ($this->elements as $element)
         {
             if (!$element->getProperty('enabled')) {
@@ -145,6 +138,12 @@ class Form implements Stringable
             }
         }
 
+        // Ejecutamos el validador global, si es que hay
+        if ($validator = static::$global_validator ?? null) {
+            if (!$this->$validator()) {
+                $valid = false;
+            }
+        }
 
         $this->is_valid = $valid;
 
