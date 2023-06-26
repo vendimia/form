@@ -6,6 +6,7 @@ use Vendimia\Form\Validate\ValidatorInterface;
 use Vendimia\Form\Control\ControlInterface;
 
 use RuntimeException;
+use OutOfRangeException;
 use Stringable;
 
 /**
@@ -66,6 +67,9 @@ class Element implements Stringable
      */
     public function getProperty($property, $default_value = null)
     {
+        if (!in_array($property, $this->properties)) {
+            throw OutOfRangeException("Property '{$property}' invalid");
+        }
         return $this->properties[$property] ?? $default_value;
     }
 
