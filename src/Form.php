@@ -105,6 +105,10 @@ class Form implements Stringable
 
             $this->elements[$name] = $this->$name;
         }
+
+        if ($values) {
+            $this->setValues($values);
+        }
     }
 
     /**
