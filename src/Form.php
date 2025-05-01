@@ -14,10 +14,10 @@ class Form implements Stringable
 {
     public static $html_caption_block = ['div'];
     public static $html_info_block  = ['div', ['class' => 'vendimia-form-info']];
-    public static $html_widget_block = ['div'];
+    public static $html_widget_block = ['div', ['class' => 'vendimia-form-widget']];
     public static $html_message_block = ['ul', ['class' => 'vendimia-form-messages']];
-    public static $html_message = ['li'];
-    public static $html_control_block = ['div'];
+    public static $html_message = ['li', ['class' => 'vendimia-form-message']];
+    public static $html_control_block = ['div', ['class' => 'vendimia-form-control']];
     public static $label_suffix = ':';
 
     private array $elements = [];
