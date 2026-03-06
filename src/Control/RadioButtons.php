@@ -14,6 +14,12 @@ class RadioButtons extends ControlAbstract implements ControlInterface
 
         // Array defining surrounding HTML element for each radio button
         'html_envelop_tag' => [],
+
+        // Array defining surrounding HTML element for each <INPUT TYPE=RADIO>
+        'html_envelop_radio_tag' => [],
+
+        // Array defining surrounding HTML element for each description
+        'html_envelop_description_tag' => [],
     ];
 
     public function renderControl(array $extra_attributes = []): string
@@ -31,6 +37,17 @@ class RadioButtons extends ControlAbstract implements ControlInterface
             $input_tag = Tag::input(...$args);
             if ($name == $this->element->getValue()) {
                 $input_tag['checked'] = 'true';
+            }
+
+            if ($this->properties['html_envelop_radio_tag']) {
+                $input_tag = (new Tag(...$this->properties['html_envelop_radio_tag']))($input_tag)
+                    ->noEscapeContent()
+                ;
+            }
+            if ($this->properties['html_envelop_description_tag']) {
+                $description = (new Tag(...$this->properties['html_envelop_description_tag']))($description)
+                    ->noEscapeContent()
+                ;
             }
 
             $radio = '<label>' .
